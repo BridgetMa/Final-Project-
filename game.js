@@ -61,11 +61,11 @@ window.onload = function(){
     } else {
       player.exp = 0;
     }
-    if (window.localStorage.getItem('level')) {
+    /*if (window.localStorage.getItem('level')) {
       player.level = parseInt(window.localStorage.getItem('level'));
     } else {
       player.level = 1;
-    }
+    }*/
     if (window.localStorage.getItem('gp')) {
       player.gp = parseInt(window.localStorage.getItem('gp'));
     } else {
