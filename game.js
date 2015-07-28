@@ -43,6 +43,7 @@ window.onload = function(){
     player.frame = player.spriteOffset + player.direction; 
     player.image = new Surface(game.spriteSheetWidth, game.spriteSheetHeight);
     player.image.draw(game.assets['sprites.png']);
+
   };
   player.move = function(){
     this.frame = this.spriteOffset + this.direction * 2 + this.walk;
