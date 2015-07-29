@@ -1,7 +1,7 @@
 enchant();
 window.onload = function(){
   var game = new Game(300, 300);
-  game.spriteSheetWidth = 256;
+  game.spriteSheetWidth = 128;
   game.spriteSheetHeight = 32;
   game.fps = 15;
   game.spriteWidth = 32;
