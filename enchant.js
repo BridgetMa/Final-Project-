@@ -3145,9 +3145,9 @@ enchant.Group = enchant.Class.create(enchant.Node, {
     );
 
     var array2hexrgb = function(arr) {
-        return '#' + ("00" + Number(parseInt(arr[0], 10)).toString(16)).slice(-2) +
-            ("00" + Number(parseInt(arr[1], 10)).toString(16)).slice(-2) +
-            ("00" + Number(parseInt(arr[2], 10)).toString(16)).slice(-2);
+        return '#' + ("00" + Number(parseInt(arr[0], 10)).toString(32)).slice(-2) +
+            ("00" + Number(parseInt(arr[1], 10)).toString(32)).slice(-2) +
+            ("00" + Number(parseInt(arr[2], 10)).toString(32)).slice(-2);
     };
 
     var detectrender = function(ctx, node) {
