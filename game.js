@@ -80,6 +80,7 @@ window.onload = function(){
           this.isMoving = true;
           this.move();
         }
+      
       }
     }
   };
