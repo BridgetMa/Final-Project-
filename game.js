@@ -2,10 +2,10 @@ enchant();
 window.onload = function(){
   var game = new Game(300, 300);
   game.spriteSheetWidth = 256;
-  game.spriteSheetHeight = 16;
+  game.spriteSheetHeight = 32;
   game.fps = 15;
-  game.spriteWidth = 16;
-  game.spriteHeight = 16;
+  game.spriteWidth = 32;
+  game.spriteHeight = 32;
   game.preload('sprites.png');
   var map = new Map(game.spriteWidth, game.spriteHeight);
   var foregroundMap = new Map(game.spriteWidth, game.spriteHeight);
@@ -80,7 +80,7 @@ window.onload = function(){
           this.isMoving = true;
           this.move();
         }
-      
+
       }
     }
   };
