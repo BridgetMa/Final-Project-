@@ -49,6 +49,7 @@ window.onload = function(){
     this.frame = this.spriteOffset;
     if (this.isMoving) {
       this.moveBy(this.xMovement, this.yMovement);
+      changeTile(x, y)
       if (!(game.frame % 2)) {
         this.walk++;
         this.walk %= 2;
