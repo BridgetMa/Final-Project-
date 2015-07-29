@@ -33,9 +33,9 @@ window.onload = function(){
   };
   var player = new Sprite(game.spriteWidth, game.spriteHeight);
   var setPlayer = function(){
-    player.spriteOffset = 5;
-    player.startingX = 6;
-    player.startingY = 14;
+    player.spriteOffset = 2;
+    player.startingX = 1;
+    player.startingY = 4;
     player.x = player.startingX * game.spriteWidth;
     player.y = player.startingY * game.spriteHeight;
     player.direction = 0;
@@ -46,14 +46,14 @@ window.onload = function(){
 
   };
   player.move = function(){
-    this.frame = this.spriteOffset + this.direction * 2 + this.walk;
+    this.frame = this.spriteOffset;
     if (this.isMoving) {
       this.moveBy(this.xMovement, this.yMovement);
       if (!(game.frame % 2)) {
         this.walk++;
         this.walk %= 2;
       }
-      if ((this.xMovement && this.x % 16 === 0) || (this.yMovement && this.y % 16 === 0)) {
+      if ((this.xMovement && this.x % 32 === 0) || (this.yMovement && this.y % 32 === 0)) {
         this.isMoving = false;
         this.walk = 1;
       }
@@ -74,8 +74,8 @@ window.onload = function(){
         this.yMovement = 4;
       }
       if (this.xMovement || this.yMovement) {
-        var x = this.x + (this.xMovement ? this.xMovement / Math.abs(this.xMovement) * 16 : 0);
-        var y = this.y + (this.yMovement ? this.yMovement / Math.abs(this.yMovement) * 16 : 0);
+        var x = this.x + (this.xMovement ? this.xMovement / Math.abs(this.xMovement) * 32 : 0);
+        var y = this.y + (this.yMovement ? this.yMovement / Math.abs(this.yMovement) * 32 : 0);
       if (0 <= x && x < map.width && 0 <= y && y < map.height && !map.hitTest(x, y)) {
           this.isMoving = true;
           this.move();
