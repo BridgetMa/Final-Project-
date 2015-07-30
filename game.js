@@ -48,8 +48,16 @@ window.onload = function(){
   player.move = function(){
     this.frame = this.spriteOffset;
     if (this.isMoving) {
+      //record (x, y) for current tile
       this.moveBy(this.xMovement, this.yMovement);
-      //changeTile(x, y)
+      //update map data with grass data
+      /* changeTile(x, y)
+      if(player.walk = 1, changeTile){
+      foregroundData (x, y) = 0
+      };
+      else{
+      }
+      */
       if (!(game.frame % 2)) {
         this.walk++;
         this.walk %= 2;
