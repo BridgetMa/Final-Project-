@@ -8,13 +8,24 @@ window.onload = function(){
   game.spriteWidth = 32;
   game.spriteHeight = 32;
   game.preload('sprites.png');
+  var currentLevel = 0;
   var map = new Map(game.spriteWidth, game.spriteHeight);
   var foregroundMap = new Map(game.spriteWidth, game.spriteHeight);
-  var setMaps = function(){
+
+  var changeLevel = function(level) {
+    /* level {
+      bg: [[]],
+      fg: [[]]
+    }
+    */
     map.image = game.assets['sprites.png'];
-    map.loadData(mapData);
+    map.loadData(level.bg);
     foregroundMap.image = game.assets['sprites.png'];
-    foregroundMap.loadData(foregroundData);
+    foregroundMap.loadData(level.fg);
+    setCollision(level.fg);
+  }
+  var setCollision = function(foregroundData){
+    
     var collisionData = [];
     for(var i = 0; i< foregroundData.length; i++){
       collisionData.push([]);
@@ -32,12 +43,12 @@ window.onload = function(){
     stage.addChild(foregroundMap);
     game.rootScene.addChild(stage);
   };
-  
+
   var player = new Sprite(game.spriteWidth, game.spriteHeight);
   var setPlayer = function(){
     player.spriteOffset = 2;
     player.startingX = 1;
-    player.startingY = 1;
+    player.startingY = 4;
     player.x = player.startingX * game.spriteWidth;
     player.y = player.startingY * game.spriteHeight;
     player.direction = 0;
@@ -50,9 +61,10 @@ window.onload = function(){
 
   //note that the tile coordinates go (y, x) NOT (x.y)
   var changeTile = function(x,y){
-    console.log(x+", "+y);
+    //console.log(x+", "+y);
     var tileX = x/32;
     var tileY = y/32;
+    var foregroundData = levels[currentLevel].fg;
     foregroundData[tileY][tileX] = 0;
     foregroundMap.loadData(foregroundData);
     map.collisionData[tileY][tileX] = 1;
@@ -125,7 +137,7 @@ window.onload = function(){
     game.rootScene.firstChild.y = y;
   };
   game.onload = function(){
-    setMaps();
+    changeLevel(levels[currentLevel]);
     setPlayer();
     setStage();
     player.on('enterframe', function() {
