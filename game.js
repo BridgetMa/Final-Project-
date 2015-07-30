@@ -32,11 +32,12 @@ window.onload = function(){
     stage.addChild(foregroundMap);
     game.rootScene.addChild(stage);
   };
+  
   var player = new Sprite(game.spriteWidth, game.spriteHeight);
   var setPlayer = function(){
     player.spriteOffset = 2;
     player.startingX = 1;
-    player.startingY = 5;
+    player.startingY = 1;
     player.x = player.startingX * game.spriteWidth;
     player.y = player.startingY * game.spriteHeight;
     player.direction = 0;
@@ -85,9 +86,7 @@ window.onload = function(){
           //down 
           changeTile(this.x, this.y-32);
             break;
-
         }
-
         this.walk = 1;
       }
     } else {
