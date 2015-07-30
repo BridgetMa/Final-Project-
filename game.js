@@ -1,6 +1,7 @@
 enchant();
 window.onload = function(){
   var game = new Game(300, 300);
+  game.keybind (32, 'a');
   game.spriteSheetWidth = 128;
   game.spriteSheetHeight = 32;
   game.fps = 15;
@@ -24,8 +25,8 @@ window.onload = function(){
     }
     map.collisionData = collisionData;
   };
+  var stage = new Group();
   var setStage = function(){
-    var stage = new Group();
     stage.addChild(map);
     stage.addChild(player);
     stage.addChild(foregroundMap);
@@ -35,7 +36,7 @@ window.onload = function(){
   var setPlayer = function(){
     player.spriteOffset = 2;
     player.startingX = 1;
-    player.startingY = 4;
+    player.startingY = 5;
     player.x = player.startingX * game.spriteWidth;
     player.y = player.startingY * game.spriteHeight;
     player.direction = 0;
@@ -45,25 +46,48 @@ window.onload = function(){
     player.image.draw(game.assets['sprites.png']);
 
   };
+
+  //note that the tile coordinates go (y, x) NOT (x.y)
+  var changeTile = function(x,y){
+    console.log(x+", "+y);
+    var tileX = x/32;
+    var tileY = y/32;
+    foregroundData[tileY][tileX] = 0;
+    foregroundMap.loadData(foregroundData);
+    map.collisionData[tileY][tileX] = 1;
+  }
+
   player.move = function(){
     this.frame = this.spriteOffset;
     if (this.isMoving) {
-      //record (x, y) for current tile
       this.moveBy(this.xMovement, this.yMovement);
-      //update map data with grass data
-      /* changeTile(x, y)
-      if(player.walk = 1, changeTile){
-      foregroundData (x, y) = 0
-      };
-      else{
-      }
-      */
+   
       if (!(game.frame % 2)) {
         this.walk++;
         this.walk %= 2;
       }
       if ((this.xMovement && this.x % 32 === 0) || (this.yMovement && this.y % 32 === 0)) {
         this.isMoving = false;
+        switch (this.direction){
+          case 1:
+          //up 
+          changeTile(this.x, this.y+32);
+            break;
+          case 2:
+          //right
+          changeTile(this.x-32, this.y);
+            break;
+          case 3:
+          //left
+          changeTile(this.x+32, this.y);
+            break;
+          case 0:
+          //down 
+          changeTile(this.x, this.y-32);
+            break;
+
+        }
+
         this.walk = 1;
       }
     } else {
@@ -107,6 +131,9 @@ window.onload = function(){
     setStage();
     player.on('enterframe', function() {
       player.move();
+      if (game.input.a) {
+        location.reload();
+      };
     });
     game.rootScene.on('enterframe', function(e) {
       game.focusViewport();
