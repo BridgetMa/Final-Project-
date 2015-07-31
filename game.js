@@ -13,6 +13,7 @@ window.onload = function(){
   var foregroundMap = new Map(game.spriteWidth, game.spriteHeight);
 
   var changeLevel = function(level) {
+
     /* level {
       bg: [[]],
       fg: [[]]
@@ -20,10 +21,13 @@ window.onload = function(){
     */
     map.image = game.assets['sprites.png'];
     map.loadData(level.bg);
+
     foregroundMap.image = game.assets['sprites.png'];
     foregroundMap.loadData(level.fg);
     setCollision(level.fg);
-  }
+    setPlayer();
+  };
+
   var setCollision = function(foregroundData){
     
     var collisionData = [];
@@ -47,10 +51,8 @@ window.onload = function(){
   var player = new Sprite(game.spriteWidth, game.spriteHeight);
   var setPlayer = function(){
     player.spriteOffset = 2;
-    player.startingX = 1;
-    player.startingY = 4;
-    player.x = player.startingX * game.spriteWidth;
-    player.y = player.startingY * game.spriteHeight;
+    player.x = levels[currentLevel].x * game.spriteWidth;
+    player.y = levels[currentLevel].y * game.spriteHeight;
     player.direction = 0;
     player.walk = 0;
     player.frame = player.spriteOffset + player.direction; 
@@ -58,6 +60,21 @@ window.onload = function(){
     player.image.draw(game.assets['sprites.png']);
 
   };
+
+  var checkVictory = function() {
+    var foregroundData = levels[currentLevel].fg;
+    var oCount = 0;
+    for(var i = 0; i<foregroundData.length; i++) {
+      for(var j = 0; j<foregroundData[i].length; j++) {
+        if(foregroundData[i][j] === 0) {
+          oCount++;
+        }
+      }
+    }
+    //console.log(oCount);
+    //console.log(levels[currentLevel].goal);
+    return oCount >= levels[currentLevel].goal;
+  }
 
   //note that the tile coordinates go (y, x) NOT (x.y)
   var changeTile = function(x,y){
@@ -72,6 +89,14 @@ window.onload = function(){
 
   player.move = function(){
     this.frame = this.spriteOffset;
+    if(map.checkTile(this.x, this.y) === 4) {
+        if(checkVictory()) {
+          currentLevel++;
+          changeLevel(levels[currentLevel]);
+        } else {
+          //Somehow restart the level
+        }
+    }
     if (this.isMoving) {
       this.moveBy(this.xMovement, this.yMovement);
    
@@ -120,11 +145,10 @@ window.onload = function(){
       if (this.xMovement || this.yMovement) {
         var x = this.x + (this.xMovement ? this.xMovement / Math.abs(this.xMovement) * 32 : 0);
         var y = this.y + (this.yMovement ? this.yMovement / Math.abs(this.yMovement) * 32 : 0);
-      if (0 <= x && x < map.width && 0 <= y && y < map.height && !map.hitTest(x, y)) {
-          this.isMoving = true;
-          this.move();
-        }
-
+        if (0 <= x && x < map.width && 0 <= y && y < map.height && !map.hitTest(x, y)) {
+            this.isMoving = true;
+            this.move();
+          }
       }
     }
   };
@@ -138,12 +162,14 @@ window.onload = function(){
   };
   game.onload = function(){
     changeLevel(levels[currentLevel]);
-    setPlayer();
+    //setPlayer();
     setStage();
     player.on('enterframe', function() {
       player.move();
+
+      //how to reload current level?
       if (game.input.a) {
-        location.reload();
+        location.reload(levels[currentLevel]);
       };
     });
     game.rootScene.on('enterframe', function(e) {
